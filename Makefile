@@ -1,7 +1,7 @@
 MARCH ?= native
 MTUNE ?= native
 
-CXXFLAGS = -O3 -Wall -ffast-math -fomit-frame-pointer -DNDEBUG -march=$(MARCH) -mtune=$(MTUNE)
+CXXFLAGS = -static -O3 -ffast-math -fomit-frame-pointer -DNDEBUG -march=$(MARCH) -mtune=$(MTUNE)
 
 all:
 	mkdir -p ./bin
