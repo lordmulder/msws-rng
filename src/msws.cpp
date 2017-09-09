@@ -92,7 +92,7 @@ static uint32_t mkseed(void)
 	const int fd = open("/dev/urandom", O_RDONLY);
 	if(fd >= 0)
 	{
-		read(fd, &seed, sizeof(uint32_t));
+		size_t rd = read(fd, &seed, sizeof(uint32_t));
 		close(fd);
 	}
 #endif
