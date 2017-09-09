@@ -50,6 +50,7 @@
 #ifndef _INC_MSWS_H
 #define _INC_MSWS_H
 
+#include <stddef.h>
 #include <stdint.h>
 
 #ifdef __cplusplus
@@ -162,4 +163,4 @@ private:
 
 } //msws
 #endif
-#endif _INC_MSWS_H
+#endif //_INC_MSWS_H

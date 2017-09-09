@@ -56,17 +56,18 @@
 #include <string.h>
 #include <inttypes.h>
 #include <time.h>
+#include <fcntl.h>
 
 #ifdef _MSC_VER
 #include <process.h>
 #include <io.h>
-#include <fcntl.h>
 #define GETPID() _getpid()
+#else
+#define GETPID() getpid()
 #endif
 
 #ifdef __linux__
 #include <unistd.h>
-#define GETPID() getpid()
 #endif
 
 static const uint32_t INFINITE = 0U;
@@ -81,6 +82,19 @@ static const char *file_name(const char *path)
 
 static uint32_t mkseed(void)
 {
+#ifdef __linux__
+	const int fd = open("/dev/urandom", O_RDONLY);
+	if(fd >= 0)
+	{
+		uint32_t seed;
+		if(read(fd, &seed, sizeof(uint32_t)) == sizeof(uint32_t))
+		{
+			close(fd);
+			return seed;
+		}
+		close(fd);
+	}
+#endif
 	return (((uint32_t)time(NULL)) << 16U) | (((uint32_t)GETPID()) & 0xFFFF);
 }
 
@@ -105,7 +119,7 @@ int main(int argc, char *argv[])
 		printf("   --bytes  : Output \"raw\" bytes instead of numeric values\n\n");
 		printf("Options:\n");
 		printf("   <count> : Set the number of values or bytes to generate (default: infinite)\n");
-		printf("   <seed>  : Set the value to seed the PRNG (default: seed from clock/PID)\n\n");
+		printf("   <seed>  : Set the value to seed the PRNG (default: seed from system RNG)\n\n");
 		return EXIT_SUCCESS;
 	}
 
