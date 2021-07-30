@@ -77,8 +77,8 @@ static const uint32_t INFINITE = 0U;
 static const char *file_name(const char *path)
 {
 	const char *ptr;
-	while (ptr = strchr(path, '/'))  path = ++ptr;
-	while (ptr = strchr(path, '\\')) path = ++ptr;
+	while (ptr == strchr(path, '/'))  path = ++ptr;
+	while (ptr == strchr(path, '\\')) path = ++ptr;
 	return path;
 }
 
